@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecodeLabs | Project 4: Form Design & Validation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="training-container">
+        <header class="main-header">
+            <span class="batch-tag">Batch: 2026 | Powered by DecodeLabs</span>
+            <h1>Project 4: Form Design & Validation</h1>
+            <p class="subtitle">Engineering the Architecture of Trust</p>
+        </header>
+
+        <main class="grid-layout">
+            <section class="form-wrapper">
+                <div class="form-card">
+                    <div class="card-header">
+                        <h2>Registration Checkpoint</h2>
+                        <p>Complete registration to verify your input security protocols.</p>
+                    </div>
+
+                    <div id="formSummaryBanner" class="summary-banner hidden" role="alert"></div>
+
+                    <form id="registrationForm" class="js-validation-form" novalidate>
+                        <div class="input-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="js-input" required minlength="3" placeholder="Enter your full name">
+                            <div class="feedback-message js-error-msg" aria-live="polite"></div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="emailAddress">Email Address</label>
+                            <input type="email" id="emailAddress" class="js-input" required placeholder="name@domain.com">
+                            <div class="feedback-message js-error-msg" aria-live="polite"></div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="accountPassword">Password</label>
+                            <input type="password" id="accountPassword" class="js-input" required minlength="8" placeholder="Minimum 8 characters">
+                            <div class="feedback-message js-error-msg" aria-live="polite"></div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" class="js-input" required placeholder="Re-enter your password">
+                            <div class="feedback-message js-error-msg" aria-live="polite"></div>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="btn-submit js-submit-btn">
+                            <span class="btn-text">Submit Payload</span>
+                            <div class="spinner hidden"></div>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <aside class="architecture-sidebar">
+                <div class="info-card">
+                    <h3>The IPO Security Pipeline</h3>
+                    <ul class="pipeline-list">
+                        <li><strong>Input (Structure):</strong> Semantic HTML baseline elements gather raw target data.</li>
+                        <li><strong>Process (Gatekeeper):</strong> JS JavaScript Engine & Regex rules parse input schemas.</li>
+                        <li><strong>Output (Communicator):</strong> Branded UI mutation elements and ARIA support guide users safely.</li>
+                    </ul>
+                </div>
+
+                <div class="info-card architecture">
+                    <h3>Defensive Inspection Layer</h3>
+                    <p>HTML5 provides excellent perimeter defense. However, custom JavaScript validation provides advanced, intelligent validation required for professional systems. This application executes verification algorithms on both the client side and runtime backend arrays.</p>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
