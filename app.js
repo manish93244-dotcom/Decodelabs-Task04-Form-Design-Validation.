@@ -1,12 +1,12 @@
 /**
- * Project 4 Client Pipeline Script Module
- * Implements client-side input validation workflows
+ * Decodelabs Project 4 - Advanced Validation & Client-Side Data Storage Engine
+ * Optimized for seamless execution on live deployment environments (GitHub Pages)
  */
 document.addEventListener('DOMContentLoaded', () => {
     const formElement = document.getElementById('registrationForm');
     const bannerElement = document.getElementById('formSummaryBanner');
     
-    // Core Configuration Validation Assertions
+    // Core Validation Configuration Schema
     const validationMap = {
         fullName: {
             dom: document.getElementById('fullName'),
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Attach immediate interactive input event loops to form elements
+    // Attach real-time input validation listeners
     Object.keys(validationMap).forEach(key => {
         const inputObj = validationMap[key];
         inputObj.dom.addEventListener('input', () => {
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Intercept form submission
-    formElement.addEventListener('submit', async (event) => {
+    // Intercept Form Submission Pipeline
+    formElement.addEventListener('submit', (event) => {
         event.preventDefault();
         bannerElement.classList.add('hidden');
 
@@ -67,46 +67,61 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isValid) isFormValid = false;
         });
 
+        // 1. INPUT STAGE EXCEPTION CONTROL
         if (!isFormValid) {
             bannerElement.className = "summary-banner error";
-            bannerElement.textContent = "Submission rejected: Client-side validation failed.";
+            bannerElement.textContent = "Submission rejected: Client-side validation checks failed.";
             bannerElement.classList.remove('hidden');
             return;
         }
 
-        // Bundle data payload for transmission
-        const formDataPayload = {
-            name: validationMap.fullName.dom.value,
-            email: validationMap.emailAddress.dom.value,
-            password: validationMap.accountPassword.dom.value
+        // 2. PROCESS STAGE: Bundle Data and Commit to Persistent Browser Storage Layer
+        const newUserPayload = {
+            id: 'USER_' + Date.now(),
+            name: validationMap.fullName.dom.value.trim(),
+            email: validationMap.emailAddress.dom.value.trim(),
+            password: btoa(validationMap.accountPassword.dom.value), // Basic Base64 encoding for data obfuscation
+            timestamp: new Date().toISOString()
         };
 
         try {
-            // Post payload data directly to our backend server API endpoint
-            const response = await fetch('http://localhost:5000/api/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formDataPayload)
+            // Retrieve existing data collection from pseudo-backend space
+            const existingUsers = JSON.parse(localStorage.getItem('decodelabs_registered_users')) || [];
+            
+            // Duplicate verification check
+            const isDuplicate = existingUsers.some(user => user.email === newUserPayload.email);
+            if (isDuplicate) {
+                bannerElement.className = "summary-banner error";
+                bannerElement.textContent = "Backend Record Conflict: This email address is already registered.";
+                bannerElement.classList.remove('hidden');
+                return;
+            }
+
+            // Push payload to user store array
+            existingUsers.push(newUserPayload);
+            localStorage.setItem('decodelabs_registered_users', JSON.stringify(existingUsers));
+
+            // Log output to developer console to verify back-end integrity structure
+            console.log("=================================================");
+            console.log("📂 DATA RETENTION SUCCESS: RECORD STORED IN BACKEND BUFFER");
+            console.log("Current DB Commit Table Status:", existingUsers);
+            console.log("=================================================");
+
+            // 3. OUTPUT STAGE: Update UI to announce success
+            bannerElement.className = "summary-banner success";
+            bannerElement.textContent = "Success: Payload securely verified and committed to persistent data engine.";
+            
+            // Clean interface fields
+            formElement.reset();
+            Object.keys(validationMap).forEach(key => {
+                validationMap[key].dom.classList.remove('is-valid');
             });
 
-            const result = await response.json();
-
-            if (response.ok) {
-                bannerElement.className = "summary-banner success";
-                bannerElement.textContent = `Success: ${result.message}`;
-                formElement.reset();
-                Object.keys(validationMap).forEach(key => {
-                    validationMap[key].dom.classList.remove('is-valid');
-                });
-            } else {
-                bannerElement.className = "summary-banner error";
-                bannerElement.textContent = `Server Error: ${result.error}`;
-            }
         } catch (error) {
             bannerElement.className = "summary-banner error";
-            bannerElement.textContent = "Critical System Error: Connection to validation server failed.";
+            bannerElement.textContent = "Critical Exception: Failed to execute write operation on the storage pipeline.";
         }
-        
+
         bannerElement.classList.remove('hidden');
     });
 });
